@@ -8,8 +8,13 @@
 
   <ItemGroup>
     <None Remove="Entities\" />
+    <None Remove="Specificatons\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
+    <Folder Include="Specificatons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
   </ItemGroup>
 </Project>

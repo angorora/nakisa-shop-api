@@ -13,9 +13,19 @@
 
   <ItemGroup>
     <None Remove="Data\" />
+    <None Remove="Data\Implementations\" />
+    <None Remove="Data\Interfaces\" />
+    <None Remove="Data\Config\" />
+    <None Remove="Data\Migrations\" />
+    <None Remove="Data\Specifications\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Data\Implementations\" />
+    <Folder Include="Data\Interfaces\" />
+    <Folder Include="Data\Config\" />
+    <Folder Include="Data\Migrations\" />
+    <Folder Include="Data\Specifications\" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>

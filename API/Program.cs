@@ -1,4 +1,8 @@
+using Core;
+using Core.Implementations;
 using Infrastructure.Data;
+using Infrastructure.Data.Implementations;
+using Infrastructure.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +18,9 @@ builder.Services.AddDbContext<StoreContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped(typeof(INakisaGenericRepository<>), typeof(NakisaGenericRepository<>));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,5 +35,20 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using var scope = app.Services.CreateScope();
+var servicesContainer = scope.ServiceProvider;
+var context = servicesContainer.GetRequiredService<StoreContext>();
+var logger = servicesContainer.GetRequiredService<ILogger<Program>>();
+
+try
+{
+    await context.Database.MigrateAsync();
+    await SeedContext.SeedData(context);
+}
+catch (Exception ex)
+{
+    logger.LogError("An error occured while perfoming migrations",ex?.InnerException?.Message);
+}
 
 app.Run();
